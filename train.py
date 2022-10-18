@@ -11,12 +11,15 @@ import pandas as pd
 def define_and_parse_args():
     pass
 
-def load_data(dataset: str):
+def download_data(dataset: str):
     """Load data from tensor flow dataset api"""
     tfds.load(
         name = dataset,
         data_dir="./data"
     )
+    
+def load_data():
+    pass
 
 def create_model():
     pass
