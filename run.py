@@ -3,24 +3,23 @@ Description:
     Script for running text contradiction analysis
 """
 
-import argparse
-
-def define_and_parse_args():
-    parser = argparse.ArgumentParser()
-    
-    parser.add_argument("-i", "--input", type=str, required=True, help="Input name of single txt or json file for analysis.")
-    
-    args = parser.parse_args()
-    
-    output = {
-        "input": args.input
-    }
-    
-    return output
+from text_contradiction import TextContradiction
 
 def main():
-    args = define_and_parse_args()
-    filename = args["input"]
+    # Create text/sequence to be analysed and categories for classification
+    statement = "I want to go to Brazil"
+    comment = "This is not a desire"
+
+    # Call API to load models and perform text analysis
+    tc = TextContradiction()
+    tc.load_tokenizer()
+    prob_contradiction = tc.analyse_text(statement, comment)
+
+    # Make prediction about contradiction
+    if prob_contradiction > 0.5:
+        print("Contradiction Detected.")
+    else:
+        print("No Contradiction Detected.")
         
 
 if __name__ == "__main__":
