@@ -3,7 +3,6 @@ Description:
     Class to provide interface with other tools.
 """
 
-import torch
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
 class TextContradiction:
