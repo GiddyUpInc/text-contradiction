@@ -14,6 +14,7 @@ class TextContradiction:
         print("Loading classifier...")
         self.nli_model = AutoModelForSequenceClassification.from_pretrained('facebook/bart-large-mnli')
         self.tokenizer = AutoTokenizer.from_pretrained('facebook/bart-large-mnli')
+        print("Finished loading classifier.")
 
     def analyse_text(self, premise, hypothesis):
         # run through model pre-trained on MNLI
