@@ -21,13 +21,18 @@ class TextContradiction:
         x = self.tokenizer.encode(premise, hypothesis, return_tensors='pt')
         logits = self.nli_model(x)[0]
 
-        # we throw away "neutral" (dim 1) and take the probability of
-        # "entailment" (2) as the probability of the label being true 
+        # "entailment" (2) is the probability of the label being true 
         entail_contradiction_logits = logits[:,[0,2]]
         probs = entail_contradiction_logits.softmax(dim=1)
         prob_no_contradiction = probs[:,1]
-        prob_no_contradiction = torch.tensor_split(prob_no_contradiction, 2)[0]
+        prob_no_contradiction = prob_no_contradiction.tolist()[0]
 
         prob_contradiction = 1 - prob_no_contradiction
 
-        return prob_contradiction
+        # "neutral" (dim 1) is the probability the premise and hypothesis are not related
+        entail_neutral_logits = logits[:,[0,1]]
+        probs = entail_neutral_logits.softmax(dim=1)
+        prob_neutral = probs[:,1]
+        prob_neutral = prob_neutral.tolist()[0]
+
+        return prob_contradiction, prob_neutral
