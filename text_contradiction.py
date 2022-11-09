@@ -23,7 +23,7 @@ class TextContradiction:
 
         # we throw away "neutral" (dim 1) and take the probability of
         # "entailment" (2) as the probability of the label being true 
-        entail_contradiction_logits = logits[:,[0,2]]
+        entail_contradiction_logits = logits[:,[0,1,2]]
         probs = entail_contradiction_logits.softmax(dim=1)
         prob_no_contradiction = probs[:,1]
         prob_no_contradiction = torch.tensor_split(prob_no_contradiction, 2)[0]

@@ -7,8 +7,8 @@ from text_contradiction import TextContradiction
 
 def main():
     # Create text/sequence to be analysed and categories for classification
-    statement = "I want to go to Brazil"
-    comment = "This is not a desire"
+    statement = "I don't like vanilla"
+    comment = "I like chocolate"
 
     # Call API to load models and perform text analysis
     tc = TextContradiction()
