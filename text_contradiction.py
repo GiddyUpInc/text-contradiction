@@ -3,7 +3,7 @@ Description:
     Class to provide interface with other tools.
 """
 
-from transformers import AutoModelForSequenceClassification, AutoTokenizer
+from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipeline
 
 class TextContradiction:
     def __init__(self):
@@ -12,9 +12,16 @@ class TextContradiction:
     def load_tokenizer(self):
         """Load text classifier"""
         print("Loading classifier...")
+        self.classifier = pipeline("zero-shot-classification",
+                                    model="facebook/bart-large-mnli")
         self.nli_model = AutoModelForSequenceClassification.from_pretrained('facebook/bart-large-mnli')
         self.tokenizer = AutoTokenizer.from_pretrained('facebook/bart-large-mnli')
         print("Finished loading classifier.")
+
+    def classify_text(self, sequence: str, categories: list[str]):
+        results = self.classifier(sequence, categories)
+        probabilities = results["scores"]
+        return probabilities
 
     def analyse_two_statements(self, premise, hypothesis):
         # run through model pre-trained on MNLI
