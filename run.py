@@ -7,13 +7,12 @@ from text_contradiction import TextContradiction
 
 def main():
     # Set initial statement and a follow up comment to be checked for contradiction
-    initial_statement = "I do not like ice cream"
-    followup_statement = "I like cars"
+    paragraph = "I do not like ice cream. I like cars. I hate ice cream."
 
     # Call API to load models and perform text analysis
     tc = TextContradiction()
     tc.load_tokenizer()
-    prob_contradiction, prob_no_contradiction, prob_neutral = tc.analyse_text(initial_statement, followup_statement)
+    prob_contradiction, prob_no_contradiction, prob_neutral = tc.analyse_text(paragraph)
 
     # Make prediction about contradiction
     

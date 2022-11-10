@@ -16,13 +16,27 @@ class TextContradiction:
         self.tokenizer = AutoTokenizer.from_pretrained('facebook/bart-large-mnli')
         print("Finished loading classifier.")
 
-    def analyse_text(self, premise, hypothesis):
+    def analyse_two_statements(self, premise, hypothesis):
         # run through model pre-trained on MNLI
         x = self.tokenizer.encode(premise, hypothesis, return_tensors='pt')
-        logits = self.nli_model(x)[0]
+        logits = self.nli_model(x.to('gpu'))[0]
 
         # "entailment" is the probability of each category
         entail_contradiction_logits = logits[:,:]
+        probs = entail_contradiction_logits.softmax(dim=1)
+        probabilities = probs.data[0,:]
+        probabilities = probabilities.tolist()
+        prob_contradiction, prob_neutral, prob_no_contradiction = probabilities[:]
+        
+        return prob_contradiction, prob_no_contradiction, prob_neutral
+
+    def analyse_text(self, paragraph):
+        # run through model pre-trained on MNLI
+        x = self.tokenizer.encode(paragraph, return_tensors='pt')
+        logits = self.nli_model(x.to('cpu'))[0]
+
+        # "entailment" is the probability of each category
+        entail_contradiction_logits = logits[:]
         probs = entail_contradiction_logits.softmax(dim=1)
         probabilities = probs.data[0,:]
         probabilities = probabilities.tolist()
